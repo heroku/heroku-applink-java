@@ -12,7 +12,7 @@
 
   <groupId>com.heroku</groupId>
   <artifactId>heroku-applink</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Heroku AppLink SDK for Java</name>
@@ -26,10 +26,24 @@
     </license>
   </licenses>
 
+  <developers>
+    <developer>
+      <name>Manuel Fuchs</name>
+      <organization>Salesforce, Inc.</organization>
+    </developer>
+  </developers>
+
   <scm>
     <url>https://github.com/heroku/heroku-applink-java</url>
     <connection>scm:git:https://github.com/heroku/heroku-applink-java.git</connection>
+    <developerConnection>scm:git:git@github.com:heroku/heroku-applink-java.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/heroku/heroku-applink-java/issues</url>
+  </issueManagement>
 
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
@@ -192,6 +206,37 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>3.2.8</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <!-- Bound to deploy instead of verify so local builds don't need a GPG key -->
+            <phase>deploy</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <gpgArguments>
+            <arg>--pinentry-mode</arg>
+            <arg>loopback</arg>
+          </gpgArguments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>0.12.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+          <autoPublish>true</autoPublish>
+        </configuration>
       </plugin>
     </plugins>
   </build>
